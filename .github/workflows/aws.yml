@@ -63,7 +63,7 @@ jobs:
                 "secrets": [
                   {
                     "name": "MESSAGE",
-                    "valueFrom": "arn:aws:secretsmanager:us-east-1:311141532026:secret:github_actions-kspcoO"
+                    "valueFrom": "arn:aws:secretsmanager:us-east-1:311141532026:secret:trysecret-1w05af"
                   }
                 ]
               }
