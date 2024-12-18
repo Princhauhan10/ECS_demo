@@ -56,7 +56,8 @@ jobs:
                 "essential": true,
                 "portMappings": [
                   {
-                    "containerPort": 3000,
+                    "containerPort": 3000,  # Your application is running on port 3000
+                    "hostPort": 3000,       # This is the host port if using EC2 or Fargate
                     "protocol": "tcp"
                   }
                 ],
