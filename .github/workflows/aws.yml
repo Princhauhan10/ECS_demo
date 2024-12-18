@@ -63,7 +63,7 @@ jobs:
                 "secrets": [
                   {
                     "name": "MESSAGE",
-                    "valueFrom": "arn:aws:secretsmanager:${{ secrets.AWS_REGION }}:${{ secrets.AWS_ACCOUNT_ID }}:secret:${{ secrets.SECRET_NAME }}"
+                    "valueFrom": "arn:aws:secretsmanager:us-east-1:311141532026:secret:github_actions-kspcoO"
                   }
                 ]
               }
@@ -71,15 +71,10 @@ jobs:
             "requiresCompatibilities": [
               "FARGATE"
             ],
-            "cpu": ${{ secrets.ECS_CPU }},
-            "memory": ${{ secrets.ECS_MEMORY }}
+            "cpu": "${{ secrets.ECS_CPU }}",
+            "memory": "${{ secrets.ECS_MEMORY }}"
           }
           EOF
-
-      # Debugging step: Output the generated JSON to verify it's correct
-      - name: Debug Task Definition JSON
-        run: |
-          cat taskdefinition.json
 
       # Step 6: Register the Task Definition
       - name: Register Task Definition
