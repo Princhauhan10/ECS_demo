@@ -51,8 +51,8 @@ jobs:
               {
                 "name": "${{ secrets.ECS_CONTAINER_NAME }}",
                 "image": "${{ secrets.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}",
-                "memory": "${{ secrets.ECS_MEMORY }}",
-                "cpu": "${{ secrets.ECS_CPU }}",
+                "memory": ${ECS_MEMORY},  # No quotes here to make it an integer
+                "cpu": ${ECS_CPU},  # No quotes here to make it an integer
                 "essential": true,
                 "portMappings": [
                   {
@@ -71,8 +71,8 @@ jobs:
             "requiresCompatibilities": [
               "FARGATE"
             ],
-            "cpu": "${{ secrets.ECS_CPU }}",
-            "memory": "${{ secrets.ECS_MEMORY }}"
+            "cpu": ${ECS_CPU},  # No quotes to ensure it's treated as an integer
+            "memory": ${ECS_MEMORY}  # No quotes to ensure it's treated as an integer
           }
           EOF
 
