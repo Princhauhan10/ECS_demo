@@ -51,8 +51,8 @@ jobs:
               {
                 "name": "${{ secrets.ECS_CONTAINER_NAME }}",
                 "image": "${{ secrets.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}",
-                "memory": ${ECS_MEMORY},  # No quotes here to make it an integer
-                "cpu": ${ECS_CPU},  # No quotes here to make it an integer
+                "memory": ${ECS_MEMORY},  # Ensure ECS_MEMORY is an integer
+                "cpu": ${ECS_CPU},  # Ensure ECS_CPU is an integer
                 "essential": true,
                 "portMappings": [
                   {
@@ -71,10 +71,15 @@ jobs:
             "requiresCompatibilities": [
               "FARGATE"
             ],
-            "cpu": ${ECS_CPU},  # No quotes to ensure it's treated as an integer
-            "memory": ${ECS_MEMORY}  # No quotes to ensure it's treated as an integer
+            "cpu": ${ECS_CPU},  # Ensure ECS_CPU is an integer
+            "memory": ${ECS_MEMORY}  # Ensure ECS_MEMORY is an integer
           }
           EOF
+
+      # Debugging step: Output the generated JSON to verify it's correct
+      - name: Debug Task Definition JSON
+        run: |
+          cat taskdefinition.json
 
       # Step 6: Register the Task Definition
       - name: Register Task Definition
@@ -83,7 +88,7 @@ jobs:
           TASK_DEFINITION_ARN=$(aws ecs register-task-definition \
             --cli-input-json file://taskdefinition.json \
             --query 'taskDefinition.taskDefinitionArn' \
-            --output text --debug)  # Added --debug for more detailed error output
+            --output text --debug)
           echo "TASK_DEFINITION_ARN=${TASK_DEFINITION_ARN}" >> $GITHUB_ENV
 
       # Step 7: Update the ECS Service
