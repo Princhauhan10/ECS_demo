@@ -51,8 +51,8 @@ jobs:
               {
                 "name": "${{ secrets.ECS_CONTAINER_NAME }}",
                 "image": "${{ secrets.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}",
-                "memory": ${{ secrets.ECS_MEMORY }},
-                "cpu": ${{ secrets.ECS_CPU }},
+                "memory": "${{ secrets.ECS_MEMORY }}",
+                "cpu": "${{ secrets.ECS_CPU }}",
                 "essential": true,
                 "portMappings": [
                   {
@@ -63,7 +63,7 @@ jobs:
                 "secrets": [
                   {
                     "name": "MESSAGE",
-                    "valueFrom": "arn:aws:secretsmanager:us-east-1:311141532026:secret:trysecret-1w05af"
+                    "valueFrom": "arn:aws:secretsmanager:${{ secrets.AWS_REGION }}:${{ secrets.AWS_ACCOUNT_ID }}:secret:${{ secrets.SECRET_NAME }}"
                   }
                 ]
               }
@@ -83,7 +83,7 @@ jobs:
           TASK_DEFINITION_ARN=$(aws ecs register-task-definition \
             --cli-input-json file://taskdefinition.json \
             --query 'taskDefinition.taskDefinitionArn' \
-            --output text)
+            --output text --debug)  # Added --debug for more detailed error output
           echo "TASK_DEFINITION_ARN=${TASK_DEFINITION_ARN}" >> $GITHUB_ENV
 
       # Step 7: Update the ECS Service
