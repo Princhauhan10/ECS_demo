@@ -51,8 +51,8 @@ jobs:
               {
                 "name": "${{ secrets.ECS_CONTAINER_NAME }}",
                 "image": "${{ secrets.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}",
-                "memory": ${ECS_MEMORY},  # Ensure ECS_MEMORY is an integer
-                "cpu": ${ECS_CPU},  # Ensure ECS_CPU is an integer
+                "memory": ${{ secrets.ECS_MEMORY }},
+                "cpu": ${{ secrets.ECS_CPU }},
                 "essential": true,
                 "portMappings": [
                   {
@@ -71,8 +71,8 @@ jobs:
             "requiresCompatibilities": [
               "FARGATE"
             ],
-            "cpu": ${ECS_CPU},  # Ensure ECS_CPU is an integer
-            "memory": ${ECS_MEMORY}  # Ensure ECS_MEMORY is an integer
+            "cpu": ${{ secrets.ECS_CPU }},
+            "memory": ${{ secrets.ECS_MEMORY }}
           }
           EOF
 
@@ -88,7 +88,7 @@ jobs:
           TASK_DEFINITION_ARN=$(aws ecs register-task-definition \
             --cli-input-json file://taskdefinition.json \
             --query 'taskDefinition.taskDefinitionArn' \
-            --output text --debug)
+            --output text)
           echo "TASK_DEFINITION_ARN=${TASK_DEFINITION_ARN}" >> $GITHUB_ENV
 
       # Step 7: Update the ECS Service
